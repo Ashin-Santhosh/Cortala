@@ -1,0 +1,23 @@
+.build/
+build/
+dist/
+Models/*.bin
+.DS_Store
+*.xcuserstate
+.env
+Models/Diarization/
+__pycache__/
+*.pyc
+.agents/
+*.vault
+library.json
+recording-storage.json
+Recordings/
+
+# Device-local tooling and credentials
+.codex/
+.aws/
+.env.*
+!.env.example
+*.pem
+*.key

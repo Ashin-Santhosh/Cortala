@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "created_at": "2026-10-21T20:51:44.965776+00:00",
+    "engine": "local",
+    "manifest": "[local]/public-jfk.jsonl",
+    "manifest_sha256": "d42e3cf6dc80af853a374bdbc410d86e74d5212df4ef92ce8b9011e731566226",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.0",
+    "normalization": "NFKC + casefold; WER Unicode letter/number tokens; CER letters/numbers only",
+    "parity_established": false,
+    "scope": "Local ASR or supplied transcript comparison; no cleanup or delivery measurement",
+    "executable": "/opt/homebrew/Cellar/whisper.cpp/1.9.4/bin/whisper-cli",
+    "executable_sha256": "0471dc453d03200ef45ab8d6329475824e864af9aa4232a89cc81e6fc3c9478d",
+    "model": "[local]/ggml-medium.bin",
+    "model_sha256": "6c14d5adee5f86394037b4e4e8b59f1673b6cee10e3cf0b11bbdbee79c156208",
+    "threads": 4,
+    "runtime_identity": [],
+    "runtime_identity_error": "Command '['/opt/homebrew/Cellar/whisper.cpp/1.9.4/bin/whisper-cli', '--help']' timed out after 3 seconds",
+    "runtime_version": "unknown; executable SHA-256 recorded"
+  },
+  "summary": {
+    "cases": 1,
+    "measured": 1,
+    "failed_processing": 0,
+    "failed_assertions": 0,
+    "corpus_wer": 0.0,
+    "latency_samples": 1,
+    "median_seconds": 28.926164125005016,
+    "p95_seconds": 28.926164125005016,
+    "all_cases_passed": true
+  },
+  "cases": [
+    {
+      "id": "public-jfk",
+      "reference": "And so my fellow Americans ask not what your country can do for you ask what you can do for your country",
+      "language": "en",
+      "audio": "/opt/homebrew/share/whisper.cpp/jfk.wav",
+      "audio_sha256": "59dfb9a4acb36fe2a2affc14bacbee2920ff435cb13cc314a08c13f66ba7860e",
+      "arguments": [
+        "/opt/homebrew/Cellar/whisper.cpp/1.9.4/bin/whisper-cli",
+        "-m",
+        "[local]/ggml-medium.bin",
+        "-f",
+        "/opt/homebrew/share/whisper.cpp/jfk.wav",
+        "-l",
+        "en",
+        "-nt",
+        "-otxt",
+        "-of",
+        "<temporary-output>",
+        "-tp",
+        "0",
+        "-t",
+        "4"
+      ],
+      "latency_seconds": 28.926164125005016,
+      "hypothesis": "And so, my fellow Americans, ask not what your country can do for you, ask what you can do for your country.",
+      "wer": 0.0,
+      "cer": 0.0,
+      "word_errors": 0,
+      "reference_words": 22,
+      "missing_expected_terms": [],
+      "missing_number_forms": [],
+      "unexpected_number_forms": [],
+      "critical_terms_and_numbers_pass": true,
+      "status": "passed",
+      "evaluation_seconds": 28.93209608300822
+    }
+  ]
+}
