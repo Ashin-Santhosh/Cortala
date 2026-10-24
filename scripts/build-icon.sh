@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 ICON_PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-ICON_SOURCE="$ICON_PROJECT_ROOT/Assets/JustWhisper-icon.png"
-ICON_OUTPUT="$ICON_PROJECT_ROOT/.build/Assets/JustWhisper.icns"
-ICON_WORK="$ICON_PROJECT_ROOT/.build/Assets/JustWhisper.iconset"
+ICON_SOURCE="$ICON_PROJECT_ROOT/Assets/Cortala-icon.png"
+ICON_OUTPUT="$ICON_PROJECT_ROOT/.build/Assets/Cortala.icns"
+ICON_WORK="$ICON_PROJECT_ROOT/.build/Assets/Cortala.iconset"
 if [[ ! -f "$ICON_OUTPUT" || "$ICON_SOURCE" -nt "$ICON_OUTPUT" || "${BASH_SOURCE[0]}" -nt "$ICON_OUTPUT" ]]; then
     mkdir -p "$ICON_WORK"
     for ICON_SIZE in 16 32 128 256 512; do

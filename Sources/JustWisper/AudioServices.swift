@@ -24,7 +24,7 @@ final class AudioRecorderService: ObservableObject {
     func start(deviceUID: String = "") async throws {
         guard !isRecording else { return }
         guard await AVCaptureDevice.requestAccess(for: .audio) else {
-            throw ProviderError.message("Microphone access is required. Enable JustWhisper in System Settings → Privacy & Security → Microphone.")
+            throw ProviderError.message("Microphone access is required. Enable Cortala in System Settings → Privacy & Security → Microphone.")
         }
         try Task.checkCancellation()
         let capture = AVAudioEngine()

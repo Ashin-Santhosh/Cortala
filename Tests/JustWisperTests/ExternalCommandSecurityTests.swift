@@ -7,12 +7,14 @@ struct ExternalCommandSecurityTests {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         defer { try? FileManager.default.removeItem(at: root) }
         let store = AppStore(root: root, startDesktop: false, loadCredentials: false)
-        store.executeCommandURL(URL(string: "justwisper://start")!)
-        #expect(store.pendingExternalCommand == .start(nil))
-        #expect(!store.busy)
-        store.dismissExternalCommand()
-        #expect(store.pendingExternalCommand == nil)
-        #expect(!store.busy)
+        for scheme in ["cortala", "justwisper"] {
+            store.executeCommandURL(URL(string: "\(scheme)://start")!)
+            #expect(store.pendingExternalCommand == .start(nil))
+            #expect(!store.busy)
+            store.dismissExternalCommand()
+            #expect(store.pendingExternalCommand == nil)
+            #expect(!store.busy)
+        }
     }
     @Test @MainActor func expiredOrSupersededCommandsCannotApply() throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)

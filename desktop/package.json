@@ -1,9 +1,9 @@
 {
-  "name": "justwhisper-desktop",
+  "name": "cortala-desktop",
   "version": "0.3.0-alpha.1",
   "private": true,
   "license": "GPL-3.0-only",
-  "description": "JustWhisper Windows and Linux desktop application",
+  "description": "Cortala Windows and Linux desktop application",
   "main": "src/main.cjs",
   "scripts": {
     "start": "electron .",

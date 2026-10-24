@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Static, fail-closed runtime inventory audit. Never launches app or engine.
 
-Usage: python3 scripts/audit-bundle.py /absolute/path/JustWhisper.app
+Usage: python3 scripts/audit-bundle.py /absolute/path/Cortala.app
 The main executable is the sole app-native exception to the runtime manifest;
 its signature is verified with the outer bundle. This is not malware analysis.
 """
@@ -77,7 +77,7 @@ def audit(app):
     components = manifest.get('components')
     license_hashes = manifest.get('license_sha256')
     require(isinstance(components, list) and isinstance(license_hashes, dict), 'Malformed runtime manifest')
-    expected = {'Contents/MacOS/JustWhisper'}
+    expected = {'Contents/MacOS/Cortala'}
     runtime = set()
     for entry in components:
         name = entry['path']
@@ -94,7 +94,7 @@ def audit(app):
         require(digest(payload) == entry['output_sha256'], 'Runtime payload hash mismatch: ' + name)
         notices = entry['license_files']
         first_party = entry.get('first_party') is True
-        require(not first_party or (name == 'Contents/Resources/bin/justwisper-live-native' and entry['source_package'] == 'JustWhisper' and entry['source_version'] == 'live-protocol-1'), 'Unexpected first-party runtime')
+        require(not first_party or (name == 'Contents/Resources/bin/justwisper-live-native' and entry['source_package'] == 'Cortala' and entry['source_version'] == 'live-protocol-1'), 'Unexpected first-party runtime')
         require(isinstance(notices, list) and (bool(notices) or first_party), 'Runtime publisher license missing')
         require(first_party or any('LICENSE' in pathlib.PurePosixPath(notice).name.upper() or
                     'COPYING' in pathlib.PurePosixPath(notice).name.upper() for notice in notices),

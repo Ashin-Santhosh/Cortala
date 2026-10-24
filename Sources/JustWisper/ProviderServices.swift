@@ -110,7 +110,7 @@ enum TranscriptionService {
         guard (attributes[.size] as? NSNumber)?.int64Value ?? 0 <= capabilities.maximumUploadBytes else {
             throw ProviderError.message("The audio chunk exceeds this provider's upload limit.")
         }
-        let boundary = "JustWhisper-\(UUID().uuidString)"
+        let boundary = "Cortala-\(UUID().uuidString)"
         var body = Data()
         func append(_ string: String) { body.append(Data(string.utf8)) }
         func field(_ name: String, _ value: String) {

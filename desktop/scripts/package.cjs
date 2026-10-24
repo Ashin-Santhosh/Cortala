@@ -22,7 +22,7 @@ if (!fs.existsSync(path.join(runtime, 'licenses', 'whisper.cpp-LICENSE'))) {
 }
 (async () => {
   const output = await packager({
-    dir: root, name: 'JustWhisper', platform, arch,
+    dir: root, name: 'Cortala', platform, arch,
     electronVersion: require('../package.json').devDependencies.electron,
     out: path.join(root, 'release'), overwrite: true, asar: true,
     extraResource: [runtime, path.join(root, '..', 'LICENSE'), path.join(root, '..', 'COPYRIGHT')],

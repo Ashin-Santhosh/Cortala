@@ -8,6 +8,9 @@ const { DesktopEngine } = require('./engine.cjs');
 const { openKnownApp } = require('./workflows.cjs');
 const validation = require('./validation.cjs');
 const { validateSender, validateInvocation } = require('./security.cjs');
+// Keep the existing desktop alpha library across the public-name change.
+app.setPath('userData', path.join(app.getPath('appData'), app.isPackaged ? 'JustWhisper' : 'justwhisper-desktop'));
+app.setName('Cortala');
 let window, engine, quitting = false;
 const uiDirectory = path.join(__dirname, '..', 'ui'); const uiPath = path.join(uiDirectory, 'index.html'); const uiURL = pathToFileURL(uiPath).href;
 const approvedPaths = new Set();
@@ -55,7 +58,7 @@ function installIPC() {
   ipcMain.handle('jw:pcm', (event, value) => { trusted(event); try { engine.pushPCM(value); } catch (error) { engine.report(error); throw error; } });
 }
 async function createWindow() {
-  window = new BrowserWindow({ width: 1280, height: 850, minWidth: 1000, minHeight: 680, backgroundColor: '#101316', title: 'JustWhisper', icon: path.join(uiDirectory, 'icon.png'), autoHideMenuBar: true, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, sandbox: true, nodeIntegration: false, webSecurity: true, allowRunningInsecureContent: false, webviewTag: false, spellcheck: false } });
+  window = new BrowserWindow({ width: 1280, height: 850, minWidth: 1000, minHeight: 680, backgroundColor: '#101316', title: 'Cortala', icon: path.join(uiDirectory, 'icon.png'), autoHideMenuBar: true, webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, sandbox: true, nodeIntegration: false, webSecurity: true, allowRunningInsecureContent: false, webviewTag: false, spellcheck: false } });
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   window.webContents.on('will-navigate', event => event.preventDefault());
   window.webContents.on('will-attach-webview', event => event.preventDefault());
@@ -78,7 +81,7 @@ app.whenReady().then(async () => {
   });
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => callback({ responseHeaders: { ...details.responseHeaders, 'Content-Security-Policy': ["default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-src 'none'; form-action 'none'"] } }));
   installIPC(); await createWindow(); registerShortcuts();
-}).catch(error => { console.error('JustWhisper could not initialize:', error.message); app.quit(); });
+}).catch(error => { console.error('Cortala could not initialize:', error.message); app.quit(); });
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', event => {
   if (quitting || !engine) return; event.preventDefault(); quitting = true; globalShortcut.unregisterAll();

@@ -149,7 +149,7 @@ components = {}
 for source in mapping:
     if source == helper:
         source_file = pathlib.Path(__file__).resolve().parent.parent / 'native/live-whisper.cpp'
-        components[source] = {'source_package': 'JustWhisper', 'source_version': 'live-protocol-1',
+        components[source] = {'source_package': 'Cortala', 'source_version': 'live-protocol-1',
                               'input_sha256': sha256(source_file), 'license_files': [], 'first_party': True}
         continue
     root = next((ancestor for ancestor in source.parents

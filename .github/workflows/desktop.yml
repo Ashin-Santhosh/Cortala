@@ -31,10 +31,10 @@ jobs:
         working-directory: desktop
       - run: cmake -S desktop/native -B desktop/native-build -DCMAKE_BUILD_TYPE=Release
       - run: cmake --build desktop/native-build --config Release --target justwhisper-live whisper-cli --parallel 2
-      - run: cmake --install desktop/native-build --config Release --component JustWhisperRuntime --prefix desktop/runtime/${{ matrix.platform }}-x64
+      - run: cmake --install desktop/native-build --config Release --component CortalaRuntime --prefix desktop/runtime/${{ matrix.platform }}-x64
       - run: node scripts/package.cjs ${{ matrix.platform }} x64
         working-directory: desktop
       - uses: actions/upload-artifact@v4
         with:
-          name: JustWhisper-${{ matrix.platform }}-x64
-          path: desktop/release/JustWhisper-${{ matrix.platform }}-x64
+          name: Cortala-${{ matrix.platform }}-x64
+          path: desktop/release/Cortala-${{ matrix.platform }}-x64

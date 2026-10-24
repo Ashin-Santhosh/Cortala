@@ -27,7 +27,7 @@ final class DesktopIntegration {
         case accessibilityRequired, noTarget, targetUnavailable, targetChanged, unsupportedField, eventCreationFailed
         var errorDescription: String? {
             switch self {
-            case .accessibilityRequired: return "Enable JustWhisper in System Settings → Privacy & Security → Accessibility to paste into other apps. Your transcript is still available to copy."
+            case .accessibilityRequired: return "Enable Cortala in System Settings → Privacy & Security → Accessibility to paste into other apps. Your transcript is still available to copy."
             case .noTarget: return "Choose the app where you want to insert the transcript and try again."
             case .targetUnavailable: return "The destination app could not be activated. Your transcript is still available to copy."
             case .targetChanged: return "The destination text field changed while recording. Copy the transcript into the field you want to use."

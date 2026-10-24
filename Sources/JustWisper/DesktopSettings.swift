@@ -107,16 +107,16 @@ enum LoginItemService {
     static var statusText: String {
         switch SMAppService.mainApp.status {
         case .enabled: return "Launch at login is enabled"
-        case .requiresApproval: return "Approve JustWhisper in System Settings → General → Login Items"
+        case .requiresApproval: return "Approve Cortala in System Settings → General → Login Items"
         case .notRegistered: return "Launch at login is off"
-        case .notFound: return "Install JustWhisper.app in Applications to enable launch at login"
+        case .notFound: return "Install Cortala.app in Applications to enable launch at login"
         @unknown default: return "Launch at login status is unavailable"
         }
     }
     /// Call only in response to the user changing the login-item setting.
     static func setEnabled(_ enabled: Bool) throws {
         guard Bundle.main.bundleURL.pathExtension == "app" else {
-            throw ProviderError.message("Launch at login requires the packaged JustWhisper.app. Open the app from Applications and try again.")
+            throw ProviderError.message("Launch at login requires the packaged Cortala.app. Open the app from Applications and try again.")
         }
         if enabled {
             if SMAppService.mainApp.status != .enabled { try SMAppService.mainApp.register() }

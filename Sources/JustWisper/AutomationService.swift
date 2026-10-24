@@ -67,7 +67,7 @@ final class AutomationService: ObservableObject {
                 let reply: AutomationReply
                 if let command = try? JSONDecoder().decode(AutomationCommand.self, from: data), command.id == filenameID {
                     let age = now.timeIntervalSince1970 - command.createdAt
-                    if age < -5 || age > 30 { reply = .failure("The automation request expired. Retry while JustWhisper is running.") }
+                    if age < -5 || age > 30 { reply = .failure("The automation request expired. Retry while Cortala is running.") }
                     else if !Self.allowedActions.contains(command.action) { reply = .failure("Unsupported local automation action.") }
                     else { reply = handler(command) }
                 } else { reply = .failure("Invalid automation request.") }

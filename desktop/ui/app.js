@@ -62,7 +62,7 @@
     lastErrorID = newestError?.id || '';
     if (session && !captureBusy && state.capture?.state === 'idle') void perform(cancelCapture);
     $('platform').textContent = ({win32:'Windows',linux:'Linux',darwin:'macOS preview'})[state.platform] || 'Desktop';
-    $('version').textContent = `JustWhisper ${state.version || ''}`;
+    $('version').textContent = `Cortala ${state.version || ''}`;
     $('connection-status').textContent = state.model?.phase === 'ready' ? 'Local model ready' : 'Your workspace';
     updateCapture(); showFallback();
     if (!document.activeElement?.matches('input,textarea,select') && !workflowDraft && !collectionDraft) render();
@@ -154,7 +154,7 @@
       speechKey.control.value = ''; rewriteKey.control.value = '';
       await bridge.saveSettings(changes); await refresh(); notify('Settings saved.');
     };
-    return [header('YOUR SETUP','Configuration','Choose where your audio goes and how JustWhisper fits your day.'),panel('Speech provider','Local stays on your computer. Cloud sends the complete recording after Stop.',h('div',{class:'form-grid'},provider.node,add('language','Language','auto'),add('speechEndpoint','Speech endpoint','https://…'),add('speechModel','Speech model','whisper-1')),speechKey.node,clearSpeech.node,hint('Saved credentials never return to this page. Credentials are stored by the main process and bound to the endpoint origin.')),panel('Formatting provider','Optional instructions can add a formatting step after speech recognition.',h('div',{class:'form-grid'},add('rewriteEndpoint','Formatting endpoint','http://localhost:11434/v1/chat/completions'),add('rewriteModel','Formatting model','Leave empty for plain dictation')),rewriteKey.node,clearRewrite.node),panel('Recording & behavior',null,h('div',{class:'form-grid'},add('shortcut','Recording shortcut','CommandOrControl+Alt+Space'),add('commandShortcut','Workflow command shortcut','CommandOrControl+Shift+Space')),warm.node,retain.node,paste.node,hint(state.capabilities?.autoPaste ? 'Auto-paste uses the platform adapter when a safe target is available; otherwise copy the transcript.' : 'Safe automatic paste is unavailable on this platform. A copy panel appears after recording.'),h('div',{class:'warning',text:'Microphone permission is requested only when you start recording. Backgrounding or losing the microphone cancels an active recording.'}),button('Save settings',save,'primary',busy()))];
+    return [header('YOUR SETUP','Configuration','Choose where your audio goes and how Cortala fits your day.'),panel('Speech provider','Local stays on your computer. Cloud sends the complete recording after Stop.',h('div',{class:'form-grid'},provider.node,add('language','Language','auto'),add('speechEndpoint','Speech endpoint','https://…'),add('speechModel','Speech model','whisper-1')),speechKey.node,clearSpeech.node,hint('Saved credentials never return to this page. Credentials are stored by the main process and bound to the endpoint origin.')),panel('Formatting provider','Optional instructions can add a formatting step after speech recognition.',h('div',{class:'form-grid'},add('rewriteEndpoint','Formatting endpoint','http://localhost:11434/v1/chat/completions'),add('rewriteModel','Formatting model','Leave empty for plain dictation')),rewriteKey.node,clearRewrite.node),panel('Recording & behavior',null,h('div',{class:'form-grid'},add('shortcut','Recording shortcut','CommandOrControl+Alt+Space'),add('commandShortcut','Workflow command shortcut','CommandOrControl+Shift+Space')),warm.node,retain.node,paste.node,hint(state.capabilities?.autoPaste ? 'Auto-paste uses the platform adapter when a safe target is available; otherwise copy the transcript.' : 'Safe automatic paste is unavailable on this platform. A copy panel appears after recording.'),h('div',{class:'warning',text:'Microphone permission is requested only when you start recording. Backgrounding or losing the microphone cancels an active recording.'}),button('Save settings',save,'primary',busy()))];
   }
   function models() {
     const prefs = state.prefs || {}, controls = {};
@@ -231,7 +231,7 @@
     } catch (error) {
       await disposeCapture(current);
       if (session === current) session = null;
-      if (token === generation) {captureBusy = false; await bridge.cancel().catch(() => {}); notify(error.name === 'NotAllowedError' ? 'Microphone permission was denied. Allow microphone access for JustWhisper, then try again.' : error.message,true); await refresh(); render();}
+      if (token === generation) {captureBusy = false; await bridge.cancel().catch(() => {}); notify(error.name === 'NotAllowedError' ? 'Microphone permission was denied. Allow microphone access for Cortala, then try again.' : error.message,true); await refresh(); render();}
     }
   }
   async function stopCapture() {
@@ -266,7 +266,7 @@
   window.addEventListener('blur',() => {if (session && !captureBusy) void perform(cancelCapture);});
   window.addEventListener('beforeunload',() => {void disposeCapture(session); void bridge?.cancel().catch(() => {});});
   window.addEventListener('hashchange',() => navigate(location.hash.slice(1)));
-  if (!bridge) {notify('The desktop bridge is unavailable. Open this page through the JustWhisper desktop app.',true); return;}
+  if (!bridge) {notify('The desktop bridge is unavailable. Open this page through the Cortala desktop app.',true); return;}
   bridge.subscribe(accept);
   bridge.subscribeCommands((value) => {
     const command = typeof value === 'string' ? value : value.command;

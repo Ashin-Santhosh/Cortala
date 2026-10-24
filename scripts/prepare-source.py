@@ -11,7 +11,7 @@ import shutil
 import subprocess
 
 root = pathlib.Path(__file__).resolve().parent.parent
-output = root / 'dist/public-source/JustWhisper'
+output = root / 'dist/public-source/Cortala'
 prefixes = {'Sources', 'Tests', 'scripts', 'tools', 'native', 'desktop', 'docs',
             'ThirdPartyNotices', 'Assets', 'benchmarks', '.github'}
 root_files = {'README.md', 'LICENSE', 'LICENSE.md', 'COPYRIGHT', 'CONTRIBUTING.md',

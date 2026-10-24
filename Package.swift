@@ -1,9 +1,9 @@
 // swift-tools-version: 6.2
 import PackageDescription
 let package = Package(
-    name: "JustWhisper",
+    name: "Cortala",
     platforms: [.macOS(.v14)],
-    products: [.executable(name: "JustWhisper", targets: ["JustWisper"])],
+    products: [.executable(name: "Cortala", targets: ["JustWisper"])],
     dependencies: [.package(url: "https://github.com/FluidInference/FluidAudio.git", exact: "0.17.7", traits: [])],
     targets: [.executableTarget(name: "JustWisper", dependencies: [.product(name: "FluidAudio", package: "FluidAudio")]), .testTarget(name: "JustWisperTests", dependencies: ["JustWisper"])],
     swiftLanguageModes: [.v5]

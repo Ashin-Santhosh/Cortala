@@ -3,22 +3,22 @@
 set -euo pipefail
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$PROJECT_ROOT"
-APP="$PROJECT_ROOT/dist/package/JustWhisper.app"
+APP="$PROJECT_ROOT/dist/package/Cortala.app"
 if [[ ! -d "$APP" ]]; then printf 'Run scripts/package.sh first.\n' >&2; exit 1; fi
 python3 scripts/audit-bundle.py "$APP"
 STAGING="$(mktemp -d "$PROJECT_ROOT/dist/dmg-staging.XXXXXX")"
 chmod 755 "$STAGING"
 trap 'rm -rf "$STAGING"' EXIT
-/usr/bin/ditto --norsrc --noextattr --noacl "$APP" "$STAGING/JustWhisper.app"
+/usr/bin/ditto --norsrc --noextattr --noacl "$APP" "$STAGING/Cortala.app"
 /bin/ln -s /Applications "$STAGING/Applications"
 python3 - "$APP" "$STAGING/READ-ME-FIRST.txt" <<'PY'
 import pathlib, plistlib, sys
 app, output = map(pathlib.Path, sys.argv[1:])
 info = plistlib.loads((app / 'Contents/Info.plist').read_bytes())
-output.write_text(f'''JustWhisper — experimental evaluation build
+output.write_text(f'''Cortala — experimental evaluation build
 
 Requires an Apple Silicon Mac running macOS {info['LSMinimumSystemVersion']} or later.
-Drag JustWhisper to Applications before opening it.
+Drag Cortala to Applications before opening it.
 
 This build is ad-hoc signed and has NOT been notarized by Apple. macOS may
 block the first launch. Review Apple's current guidance for apps from
@@ -37,7 +37,7 @@ The app is not a sandboxed or certified security product. Review recording
 retention and local/cloud settings before using it with sensitive material.
 
 Copyright (C) 2026 CortexKinematics.
-JustWhisper's original code is licensed under GNU GPL version 3 only.
+Cortala's original code is licensed under GNU GPL version 3 only.
 Commercial redistribution is permitted under the GPL's terms, including
 corresponding-source obligations. See LICENSE.txt and COPYRIGHT.txt.
 Third-party notices are included inside the app bundle and retain their terms.
@@ -46,8 +46,8 @@ PY
 if [[ -f LICENSE ]]; then cp LICENSE "$STAGING/LICENSE.txt"; fi
 if [[ -f COPYRIGHT ]]; then cp COPYRIGHT "$STAGING/COPYRIGHT.txt"; fi
 ARCH="$(uname -m)"
-DMG="$PROJECT_ROOT/dist/JustWhisper-experimental-macOS-$ARCH.dmg"
-/usr/bin/hdiutil create -ov -format UDZO -fs HFS+ -volname JustWhisper -srcfolder "$STAGING" "$DMG"
+DMG="$PROJECT_ROOT/dist/Cortala-experimental-macOS-$ARCH.dmg"
+/usr/bin/hdiutil create -ov -format UDZO -fs HFS+ -volname Cortala -srcfolder "$STAGING" "$DMG"
 /usr/bin/hdiutil verify "$DMG"
 (cd "$PROJECT_ROOT/dist" && /usr/bin/shasum -a 256 "$(basename "$DMG")" > "$(basename "$DMG").sha256")
 printf 'Prepared experimental DMG: %s\nNot notarized. Nothing uploaded.\n' "$DMG"

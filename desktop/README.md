@@ -1,4 +1,4 @@
-# JustWhisper for Windows and Linux
+# Cortala for Windows and Linux
 
 This desktop port is under development. The installed native Mac app is separate and keeps its existing data. Android, iOS, and video capture are on hold.
 
@@ -11,7 +11,7 @@ The speech runtime is whisper.cpp 1.9.4, downloaded from its official release wi
 ```sh
 cmake -S native -B native-build -DCMAKE_BUILD_TYPE=Release
 cmake --build native-build --config Release --target justwhisper-live whisper-cli --parallel 2
-cmake --install native-build --config Release --component JustWhisperRuntime --prefix runtime/linux-x64
+cmake --install native-build --config Release --component CortalaRuntime --prefix runtime/linux-x64
 npm run package:linux
 ```
 

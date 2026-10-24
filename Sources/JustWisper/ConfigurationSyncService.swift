@@ -81,7 +81,7 @@ final class ConfigurationSyncService {
     }
 
     func pull(folder: URL) throws -> LibraryState {
-        guard let snapshot = try inspect(folder: folder) else { throw AppError.message("This folder has no published JustWhisper configuration. Publish this Mac's settings first.") }
+        guard let snapshot = try inspect(folder: folder) else { throw AppError.message("This folder has no published Cortala configuration. Publish this Mac's settings first.") }
         return snapshot.configuration
     }
 
@@ -307,7 +307,7 @@ final class ConfigurationSyncService {
     }
     private func decode(_ data: Data) throws -> Snapshot {
         let snapshot = try JSONDecoder().decode(Snapshot.self, from: data)
-        guard [1, 2].contains(snapshot.formatVersion) else { throw AppError.message("This configuration uses a newer format. Update JustWhisper before pulling it.") }
+        guard [1, 2].contains(snapshot.formatVersion) else { throw AppError.message("This configuration uses a newer format. Update Cortala before pulling it.") }
         guard !snapshot.configuration.modes.isEmpty else { throw AppError.message("The shared configuration has no modes.") }
         if let expected = snapshot.configurationHash, expected != (try configurationHash(snapshot.configuration)) {
             throw AppError.message("The shared configuration hash does not match. Restore a preserved revision or publish it again.")
