@@ -1,6 +1,10 @@
 # JustWhisper
 
+Licensing is being prepared. The intended public source-available terms will allow contributions while restricting resale; no final license has been applied. Third-party components retain their own licenses.
+
 A native macOS dictation and meeting-transcription app under active development. This personal development build uses local whisper.cpp or a cloud transcription endpoint, with an independently configured language model for cleanup, translation and meeting notes. English and multilingual recognition are supported through the selected speech model. Exact Superwhisper parity is not established. Current accuracy evaluation assesses JustWhisper independently; user-voice accuracy remains unmeasured.
+
+Windows and Linux development lives in [desktop/README.md](desktop/README.md). It has a separate sandboxed desktop interface and platform build jobs; target-device acceptance and full macOS feature parity are not yet established. Mobile development is on hold.
 
 ## Build and run
 

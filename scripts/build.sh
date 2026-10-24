@@ -2,11 +2,19 @@
 set -euo pipefail
 source "$(dirname "$0")/swift-env.sh"
 CONFIGURATION="${1:-release}"
+if [[ "$CONFIGURATION" == release ]]; then
+    # SwiftPM embeds its generated resource-bundle location as a string literal.
+    # Keep release products outside personal home directories as well as mapping
+    # source locations, so that literal cannot reveal the developer's account.
+    SWIFT_OPTIONS+=(--scratch-path /tmp/justwhisper-public-release-build)
+    SWIFT_OPTIONS+=(-Xswiftc -file-prefix-map -Xswiftc "$PROJECT_ROOT=." -Xswiftc -debug-prefix-map -Xswiftc "$PROJECT_ROOT=." -Xcc "-ffile-prefix-map=$PROJECT_ROOT=.")
+fi
 swift build "${SWIFT_OPTIONS[@]}" -c "$CONFIGURATION"
 BIN_DIR="$(swift build "${SWIFT_OPTIONS[@]}" -c "$CONFIGURATION" --show-bin-path)"
 APP="$PROJECT_ROOT/dist/JustWhisper.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/JustWhisper" "$APP/Contents/MacOS/JustWhisper"
+if [[ "$CONFIGURATION" == release ]]; then /usr/bin/strip -S "$APP/Contents/MacOS/JustWhisper"; fi
 # SwiftPM may embed an absolute toolchain search path under the build directory.
 # The release uses system Swift libraries; keep only portable/system rpaths.
 python3 - "$APP/Contents/MacOS/JustWhisper" <<'PY'

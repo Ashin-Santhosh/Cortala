@@ -174,14 +174,18 @@ struct AppSettings: Codable {
         meetingSource = try values.decodeIfPresent(MeetingAudioSource.self, forKey: .meetingSource) ?? meetingSource
     }
 
-    mutating func detectLocalInstallation(resourceURL: URL? = Bundle.main.resourceURL, workspaceURL: URL = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()) {
+    mutating func detectLocalInstallation(resourceURL: URL? = Bundle.main.resourceURL, workspaceURL: URL? = nil) {
         let manager = FileManager.default
         if localExecutable.isEmpty {
             let candidates = [resourceURL?.appendingPathComponent("bin/whisper-cli").path, "/opt/homebrew/bin/whisper-cli", "/usr/local/bin/whisper-cli"].compactMap { $0 }
             localExecutable = candidates.first { manager.isExecutableFile(atPath: $0) } ?? ""
         }
         if localModel.isEmpty {
-            let candidates = [resourceURL?.appendingPathComponent("Models/ggml-medium.bin"), workspaceURL.appendingPathComponent("Models/ggml-medium.bin")].compactMap { $0 }
+            var workspace = workspaceURL
+            #if DEBUG
+            workspace = workspace ?? URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+            #endif
+            let candidates = [resourceURL?.appendingPathComponent("Models/ggml-medium.bin"), workspace?.appendingPathComponent("Models/ggml-medium.bin")].compactMap { $0 }
             localModel = candidates.first { manager.isReadableFile(atPath: $0.path) }?.path ?? ""
         }
     }

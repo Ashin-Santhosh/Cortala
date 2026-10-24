@@ -2,7 +2,7 @@
   "metadata": {
     "created_at": "2026-10-21T20:51:44.965776+00:00",
     "engine": "local",
-    "manifest": "[local]/public-jfk.jsonl",
+    "manifest": "<project>/benchmarks/public-jfk.jsonl",
     "manifest_sha256": "d42e3cf6dc80af853a374bdbc410d86e74d5212df4ef92ce8b9011e731566226",
     "platform": "macOS-26.6.2-arm64-arm-64bit",
     "python": "3.11.0",
@@ -11,7 +11,7 @@
     "scope": "Local ASR or supplied transcript comparison; no cleanup or delivery measurement",
     "executable": "/opt/homebrew/Cellar/whisper.cpp/1.9.4/bin/whisper-cli",
     "executable_sha256": "0471dc453d03200ef45ab8d6329475824e864af9aa4232a89cc81e6fc3c9478d",
-    "model": "[local]/ggml-medium.bin",
+    "model": "<project>/Models/ggml-medium.bin",
     "model_sha256": "6c14d5adee5f86394037b4e4e8b59f1673b6cee10e3cf0b11bbdbee79c156208",
     "threads": 4,
     "runtime_identity": [],
@@ -39,7 +39,7 @@
       "arguments": [
         "/opt/homebrew/Cellar/whisper.cpp/1.9.4/bin/whisper-cli",
         "-m",
-        "[local]/ggml-medium.bin",
+        "<project>/Models/ggml-medium.bin",
         "-f",
         "/opt/homebrew/share/whisper.cpp/jfk.wav",
         "-l",
