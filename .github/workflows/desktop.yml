@@ -1,0 +1,40 @@
+name: Windows and Linux desktop
+on:
+  workflow_dispatch:
+  push:
+    paths: ['desktop/**', 'native/live-whisper.cpp', '.github/workflows/desktop.yml']
+  pull_request:
+    paths: ['desktop/**', 'native/live-whisper.cpp', '.github/workflows/desktop.yml']
+permissions:
+  contents: read
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win32
+          - os: ubuntu-24.04
+            platform: linux
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - run: npm ci
+        working-directory: desktop
+      - run: npm test
+        working-directory: desktop
+      - run: cmake -S desktop/native -B desktop/native-build -DCMAKE_BUILD_TYPE=Release
+      - run: cmake --build desktop/native-build --config Release --target justwhisper-live whisper-cli --parallel 2
+      - run: cmake --install desktop/native-build --config Release --component JustWhisperRuntime --prefix desktop/runtime/${{ matrix.platform }}-x64
+      - run: node scripts/package.cjs ${{ matrix.platform }} x64
+        working-directory: desktop
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JustWhisper-${{ matrix.platform }}-x64
+          path: desktop/release/JustWhisper-${{ matrix.platform }}-x64

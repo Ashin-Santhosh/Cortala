@@ -21,3 +21,16 @@ Recordings/
 !.env.example
 *.pem
 *.key
+*.p12
+*.pfx
+*.mobileprovision
+*.provisionprofile
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+node_modules/
+.tools/
+.cache/
+desktop/release/
+desktop/native-build/
+desktop/runtime/

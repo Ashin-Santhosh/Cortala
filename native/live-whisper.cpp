@@ -10,6 +10,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#ifdef _WIN32
+#include <fcntl.h>
+#include <io.h>
+#endif
 
 static std::string escaped(const char * input) {
     std::string out = "\"";
@@ -21,6 +25,11 @@ static std::string escaped(const char * input) {
     return out + "\"";
 }
 int main(int argc, char ** argv) {
+#ifdef _WIN32
+    // Windows text streams otherwise translate binary PCM newline bytes.
+    _setmode(_fileno(stdin), _O_BINARY);
+    _setmode(_fileno(stdout), _O_BINARY);
+#endif
     if (argc != 3) return 2;
     const std::string language = argv[2];
     if (language != "auto" && whisper_lang_id(language.c_str()) < 0) return 3;
