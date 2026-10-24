@@ -222,7 +222,7 @@ import AVFoundation
     }
 
     private func persist(_ snapshot: LibraryState) -> Bool {
-        guard libraryWritable else { error = "Saving is disabled to protect the existing library. Unlock this Mac’s Keychain or restore the library, then reopen JustWisper."; return false }
+        guard libraryWritable else { error = "Saving is disabled to protect the existing library. Unlock this Mac’s Keychain or restore the library, then reopen JustWhisper."; return false }
         do {
             let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
             try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: root.path)
@@ -321,10 +321,10 @@ import AVFoundation
                 guard !busy else { throw AppError.message("Finish the current recording or transcription before changing modes.") }
                 _ = chooseMode(id)
             case .start(let id):
-                guard !busy else { throw AppError.message("JustWisper is already recording or processing.") }
+                guard !busy else { throw AppError.message("JustWhisper is already recording or processing.") }
                 toggleRecording(modeOverride: id.flatMap { selected in library.modes.first { $0.id == selected } })
             case .toggle(let id):
-                guard !isStarting && !isProcessing else { throw AppError.message("JustWisper is preparing or processing audio.") }
+                guard !isStarting && !isProcessing else { throw AppError.message("JustWhisper is preparing or processing audio.") }
                 toggleRecording(modeOverride: id.flatMap { selected in library.modes.first { $0.id == selected } })
             case .stop: if isRecording { stopRecording() }
             case .cancel: cancel()
@@ -986,7 +986,7 @@ import AVFoundation
         if panel.runModal() == .OK, let url = panel.url { process(url, isMeeting: asMeeting, meetingTitle: asMeeting ? url.deletingPathExtension().lastPathComponent : nil) }
     }
     func export(_ entry: Transcript) {
-        let panel = NSSavePanel(); panel.allowedContentTypes = [.plainText]; panel.nameFieldStringValue = "JustWisper-\(entry.date.formatted(.iso8601.year().month().day())).txt"
+        let panel = NSSavePanel(); panel.allowedContentTypes = [.plainText]; panel.nameFieldStringValue = "JustWhisper-\(entry.date.formatted(.iso8601.year().month().day())).txt"
         if panel.runModal() == .OK, let url = panel.url { do { try entry.text.write(to: url, atomically: true, encoding: .utf8) } catch { self.error = error.localizedDescription } }
     }
     private func providerRoute(_ mode: DictationMode) throws -> ResolvedProviderRoute {
@@ -1036,7 +1036,7 @@ import AVFoundation
     func updateAutomation() {
         guard desktopEnabled else { return }
         if library.settings.automationEnabled {
-            automation?.start { [weak self] command in self?.applyAutomation(command) ?? .failure("JustWisper is shutting down.") }
+            automation?.start { [weak self] command in self?.applyAutomation(command) ?? .failure("JustWhisper is shutting down.") }
         } else { automation?.stop() }
     }
 
@@ -1049,7 +1049,7 @@ import AVFoundation
             guard isRecording else { return .failure("There is no active recording to stop.") }
             stopRecording(); return .success(["status": status])
         case "start_recording", "toggle_recording":
-            guard !isStarting && !isProcessing else { return .failure("JustWisper is busy.") }
+            guard !isStarting && !isProcessing else { return .failure("JustWhisper is busy.") }
             if command.action == "start_recording" && isRecording { return .failure("A recording is already active.") }
             let mode = args["mode"].flatMap { value in library.modes.first { $0.id.uuidString.caseInsensitiveCompare(value) == .orderedSame || $0.name.caseInsensitiveCompare(value) == .orderedSame } }
             if args["mode"] != nil && mode == nil { return .failure("The requested mode was not found.") }
@@ -1123,7 +1123,7 @@ import AVFoundation
             try configSync.startAutomatic(folder: URL(fileURLWithPath: library.settings.configSyncFolder, isDirectory: true), initialChoice: choice,
                 localState: { [weak self] in self?.lastSavedLibrary ?? LibraryState() },
                 applyRemote: { [weak self] remote in
-                    guard let self else { throw AppError.message("JustWisper is shutting down.") }
+                    guard let self else { throw AppError.message("JustWhisper is shutting down.") }
                     try self.applySharedConfiguration(remote)
                 }, onStatus: { [weak self] message in
                     guard let self else { return }
@@ -1229,7 +1229,7 @@ import AVFoundation
     }
 
     func exportVocabulary() {
-        let panel = NSSavePanel(); panel.allowedContentTypes = [.commaSeparatedText]; panel.nameFieldStringValue = "JustWisper-vocabulary.csv"
+        let panel = NSSavePanel(); panel.allowedContentTypes = [.commaSeparatedText]; panel.nameFieldStringValue = "JustWhisper-vocabulary.csv"
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do { try VocabularyCSV.encode(library.vocabulary).write(to: url, atomically: true, encoding: .utf8) }
         catch { self.error = error.localizedDescription }

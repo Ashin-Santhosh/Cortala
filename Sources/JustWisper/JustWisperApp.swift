@@ -11,7 +11,7 @@ import Carbon
         lifecycle.configure(store: store)
     }
     var body: some Scene {
-        WindowGroup("JustWisper", id: "main") {
+        WindowGroup("JustWhisper", id: "main") {
             MainView().environmentObject(store).frame(minWidth: 920, minHeight: 650)
                 .background {
                     if #available(macOS 15.0, *) { MeetingTranslationHost(service: store.meetingTranslation) }
@@ -31,9 +31,9 @@ import Carbon
                 Button(store.isRecording ? "Stop recording" : "Start recording") { store.toggleRecording() }.keyboardShortcut("r", modifiers: [.command, .shift]).disabled(store.isStarting || store.isProcessing)
                 Button("Cancel") { store.cancel() }.keyboardShortcut(.escape, modifiers: [])
             }
-            CommandGroup(replacing: .help) { Button("JustWisper Help & Tutorial") { store.page = .help } }
+            CommandGroup(replacing: .help) { Button("JustWhisper Help & Tutorial") { store.page = .help } }
         }
-        MenuBarExtra("JustWisper", systemImage: store.isRecording ? "mic.fill" : "waveform") {
+        MenuBarExtra("JustWhisper", systemImage: store.isRecording ? "mic.fill" : "waveform") {
             MenuContents().environmentObject(store)
         }
     }
@@ -49,7 +49,7 @@ struct MenuContents: View {
         Button("Transform selection with current mode") { store.transformSelection() }.disabled(store.busy || !store.library.settings.captureSelectedText)
         Button("Copy latest transcript") { store.desktop.copy(store.latestText) }.disabled(store.latestText.isEmpty)
         Divider()
-        Button("Open JustWisper") { openWindow(id: "main"); NSApp.activate(ignoringOtherApps: true) }
+        Button("Open JustWhisper") { openWindow(id: "main"); NSApp.activate(ignoringOtherApps: true) }
         Button("Quit") { NSApp.terminate(nil) }
     }
 }
@@ -73,7 +73,7 @@ struct MainView: View {
     var body: some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 7) {
-                HStack(spacing: 9) { Image(systemName: "waveform").font(.title).foregroundStyle(.mint); Text("JustWisper").font(.title2.weight(.semibold)) }.padding(.vertical, 26).padding(.horizontal, 16)
+                HStack(spacing: 9) { Image(systemName: "waveform").font(.title).foregroundStyle(.mint); Text("JustWhisper").font(.title2.weight(.semibold)) }.padding(.vertical, 26).padding(.horizontal, 16)
                 ForEach(SidebarPage.allCases) { page in
                     Button { store.page = page } label: {
                         HStack(spacing: 13) { Image(systemName: page.icon).frame(width: 22); Text(page.rawValue); Spacer(); if page == .errors && !store.errorEvents.isEmpty { Text("\(store.errorEvents.count)").font(.caption).foregroundStyle(.orange) } }.padding(12)
@@ -152,7 +152,7 @@ struct HomeView: View {
                     } label: {
                         Label("Enable Accessibility for auto-paste…", systemImage: "hand.point.up.left.fill")
                     }
-                    Text("In System Settings, enable JustWisper from your Applications folder. Then place your cursor in another app and use the recording shortcut.")
+                    Text("In System Settings, enable JustWhisper from your Applications folder. Then place your cursor in another app and use the recording shortcut.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 HStack {
@@ -321,7 +321,7 @@ struct MeetingsView: View {
                         Button("Use default folder") { store.resetMeetingRecordingsFolder() }
                             .disabled(store.recordingStorage.usesDefaultMeetingDirectory)
                     }.disabled(store.busy)
-                    Text("Applies to new meeting audio files. Existing recordings stay in their current folders. History remains in JustWisper; configured audio retention still applies.").font(.caption).foregroundStyle(.secondary)
+                    Text("Applies to new meeting audio files. Existing recordings stay in their current folders. History remains in JustWhisper; configured audio retention still applies.").font(.caption).foregroundStyle(.secondary)
                     Toggle("Keep audio after successful transcription (all recordings)", isOn: $store.library.settings.retainAudio)
                         .disabled(store.busy).onChange(of: store.library.settings.retainAudio) { _, _ in store.save() }
                     if !store.library.settings.retainAudio {
@@ -588,7 +588,7 @@ struct ModelDownloadsView: View {
                 catch { store.error = error.localizedDescription }
                 removing = nil
             }
-        } message: { Text("Only the model in JustWisper's managed model folder is removed. You can download it again later.") }
+        } message: { Text("Only the model in JustWhisper's managed model folder is removed. You can download it again later.") }
     }
 }
 struct MeetingSuggestionsView: View {
@@ -674,7 +674,7 @@ struct ConfigurationView: View {
                 Label(shortcutError, systemImage: "exclamationmark.triangle").font(.callout).foregroundStyle(.orange)
                 Button("Retry registering shortcuts") { store.desktop.start(); store.objectWillChange.send() }
             }
-            Text("Auto-paste needs Accessibility access for JustWisper in System Settings. Microphone access is requested when you first record.").font(.caption).foregroundStyle(.secondary)
+            Text("Auto-paste needs Accessibility access for JustWhisper in System Settings. Microphone access is requested when you first record.").font(.caption).foregroundStyle(.secondary)
             Button("Open Accessibility settings") { NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!) }
         }
         Panel {
@@ -725,7 +725,7 @@ struct AccuracyView: View {
             Text("Reference transcript").font(.headline); TextEditor(text: $reference).frame(height: 140)
             Text("Model transcript").font(.headline); TextEditor(text: $hypothesis).frame(height: 140)
             if !reference.isEmpty { HStack { Text(TextProcessing.wordErrorRate(reference: reference, hypothesis: hypothesis), format: .percent.precision(.fractionLength(1))).font(.system(size: 36, weight: .semibold, design: .rounded)).foregroundStyle(.mint); Text("word error rate").foregroundStyle(.secondary) } }
-            Text("Evaluate JustWisper on held-out recordings of English, your other languages, names, numbers, technical terms, corrections and noisy environments. Public fixtures do not measure accuracy on your own voice.").font(.caption).foregroundStyle(.secondary)
+            Text("Evaluate JustWhisper on held-out recordings of English, your other languages, names, numbers, technical terms, corrections and noisy environments. Public fixtures do not measure accuracy on your own voice.").font(.caption).foregroundStyle(.secondary)
         }
     } }
 }

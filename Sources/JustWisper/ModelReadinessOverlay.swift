@@ -45,7 +45,7 @@ struct ModelReadinessNotifications {
         guard phase != .idle else { hide(); return }
         state.warming = warming
         state.title = warming ? "Warming local Whisper" : ready ? "Ready for dictation" : "Local model could not load"
-        state.detail = warming ? "Preparing the model. First-time graphics setup can take longer." : ready ? "The model is loaded and stays ready while JustWisper is open." : "Check the model status in JustWisper Home."
+        state.detail = warming ? "Preparing the model. First-time graphics setup can take longer." : ready ? "The model is loaded and stays ready while JustWhisper is open." : "Check the model status in JustWhisper Home."
         if panel == nil {
             let window = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 376, height: 105), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
             window.level = .floating

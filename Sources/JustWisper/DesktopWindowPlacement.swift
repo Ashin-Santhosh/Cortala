@@ -23,7 +23,7 @@ enum WorkflowDisplayPolicy {
     }
     static func apply(to app: NSRunningApplication, displayIndex: Int?, fullscreen: Bool?) async throws {
         guard displayIndex != nil || fullscreen != nil else { return }
-        guard AXIsProcessTrusted() else { throw ProviderError.message("Enable JustWisper in System Settings → Privacy & Security → Accessibility to place app windows.") }
+        guard AXIsProcessTrusted() else { throw ProviderError.message("Enable JustWhisper in System Settings → Privacy & Security → Accessibility to place app windows.") }
         let application = AXUIElementCreateApplication(app.processIdentifier)
         AXUIElementSetMessagingTimeout(application, 0.3)
         var selected: AXUIElement?

@@ -1,6 +1,6 @@
-# JustWisper
+# JustWhisper
 
-A native macOS dictation and meeting-transcription app under active development. This personal development build uses local whisper.cpp or a cloud transcription endpoint, with an independently configured language model for cleanup, translation and meeting notes. English and multilingual recognition are supported through the selected speech model. Exact Superwhisper parity is not established. Current accuracy evaluation assesses JustWisper independently; user-voice accuracy remains unmeasured.
+A native macOS dictation and meeting-transcription app under active development. This personal development build uses local whisper.cpp or a cloud transcription endpoint, with an independently configured language model for cleanup, translation and meeting notes. English and multilingual recognition are supported through the selected speech model. Exact Superwhisper parity is not established. Current accuracy evaluation assesses JustWhisper independently; user-voice accuracy remains unmeasured.
 
 ## Build and run
 
@@ -9,7 +9,7 @@ Requires macOS 14 or later, Apple's Command Line Tools with Swift 6, and Python 
 ```sh
 ./scripts/test.sh
 ./scripts/build.sh
-open dist/JustWisper.app
+open dist/JustWhisper.app
 ```
 
 The scripts use project-local caches and work around conflicting SwiftBridging module maps and stale SwiftPM interfaces found in the installed Command Line Tools. They do not edit the installed compiler. The app is ad-hoc signed for personal development; it is not a notarized public release.
@@ -54,7 +54,7 @@ Successful audio is deleted by default. Enable retention to replay and transcrib
 
 A transcript is saved before optional formatting. A formatting or destination-delivery failure therefore leaves text available for review and copying. Destination validation can refuse automatic insertion if the original app or editable field changed.
 
-Configuration can sync through a user-selected folder managed by iCloud Drive or another file-sync app. Choose whether this Mac or the shared configuration initializes **automatic sync**, then saved changes are checked every two seconds; unsaved editor drafts stay local and defer incoming changes until you Save. The saved baseline permits restart/resume. Concurrent edits or diverged revisions pause automatic exchange and preserve a local conflict copy, the shared file and immutable revision snapshots for explicit resolution. Manual **Push**/**Pull** remain available. Snapshots omit history, audio, Keychain keys and machine-specific paths/permissions. Pull first backs up the local configuration and defers automatic application while recording/transcription is active. JustWisper does not provide a hosted sync service. See [configuration sync](docs/configuration-sync.md) for conflict handling and acceptance checks.
+Configuration can sync through a user-selected folder managed by iCloud Drive or another file-sync app. Choose whether this Mac or the shared configuration initializes **automatic sync**, then saved changes are checked every two seconds; unsaved editor drafts stay local and defer incoming changes until you Save. The saved baseline permits restart/resume. Concurrent edits or diverged revisions pause automatic exchange and preserve a local conflict copy, the shared file and immutable revision snapshots for explicit resolution. Manual **Push**/**Pull** remain available. Snapshots omit history, audio, Keychain keys and machine-specific paths/permissions. Pull first backs up the local configuration and defers automatic application while recording/transcription is active. JustWhisper does not provide a hosted sync service. See [configuration sync](docs/configuration-sync.md) for conflict handling and acceptance checks.
 
 Local CLI/MCP access is off by default. Enable **Allow same-user CLI and MCP commands** and save settings to let local tools submit changes through the running app's private inbox. Read-only commands inspect the atomically saved library. See [docs/local-automation.md](docs/local-automation.md), the integration tool's help and [docs/status.md](docs/status.md) for validation; no network server or third-party API compatibility is implied.
 
@@ -62,7 +62,7 @@ Local CLI/MCP access is off by default. Enable **Allow same-user CLI and MCP com
 
 The release app builds, launches, imports the bundled whisper.cpp JFK speech fixture through local recognition, and restores its saved History after relaunch. The prior extension checkpoint passed 42 Swift tests, with separately enabled real local Whisper/Ollama execution checks; the current extension adds focused provider-route, correction-review, private-file-permission, sync and speaker-alignment fixtures. Gated inference checks are skipped by default. See [feature status](docs/feature-status.md) for the full implementation/acceptance matrix and [docs/status.md](docs/status.md) for observed build/test/runtime results, and [docs/implementation-plan.md](docs/implementation-plan.md) for acceptance criteria. A successful fixture demonstrates pipeline operation, not accuracy on your accent or parity with another product.
 
-This build still needs broader permission, microphone, destination-insertion and real-meeting tests; live cloud tests require your own credentials. Remaining acceptance work includes permissioned Apple streaming operation, evaluated speaker-label quality, confirmed active-call detection, measured user-voice accuracy, and signed/notarized distribution. The user chose independent JustWisper evaluation; a Flow comparison is not a current acceptance requirement. Automatic folder sync conservatively pauses concurrent conflicts for explicit source selection rather than merging semantic settings edits. Newly implemented calendar, context, shortcut, device, download, folder exchange and integration controls still need permission and live workflow acceptance checks. Provider upload and meeting-duration limits must be respected; the app is not ready to promise arbitrary-length sessions.
+This build still needs broader permission, microphone, destination-insertion and real-meeting tests; live cloud tests require your own credentials. Remaining acceptance work includes permissioned Apple streaming operation, evaluated speaker-label quality, confirmed active-call detection, measured user-voice accuracy, and signed/notarized distribution. The user chose independent JustWhisper evaluation; a Flow comparison is not a current acceptance requirement. Automatic folder sync conservatively pauses concurrent conflicts for explicit source selection rather than merging semantic settings edits. Newly implemented calendar, context, shortcut, device, download, folder exchange and integration controls still need permission and live workflow acceptance checks. Provider upload and meeting-duration limits must be respected; the app is not ready to promise arbitrary-length sessions.
 
 Live meeting translation is available under Meetings → Live translation, with From/To selectors and Prepare languages. It uses Apple on-device translation with bounded recent caption updates and requires macOS 15+, supported on-device speech and downloaded language models. Live previews are provisional; final original transcripts are preserved separately. See [implementation and evidence](docs/live-meeting-translation.md).
 
@@ -74,3 +74,6 @@ Help & Tutorial includes a first-run walkthrough, permission links, provider dat
 
 
 The Mac live-recognition update keeps local Whisper resident, shows actual model readiness, and supports bounded live meeting captions feeding Apple or configured-language-model translation. Workflows have a configurable dedicated shortcut and optional display/fullscreen placement with main-display fallback. Paste targets are captured at Stop; unavailable destinations offer a short copy overlay with hover pause. Genuine failures are collected in the session-only Errors page. See [live local Whisper](docs/live-local-whisper.md) for measured latency and acceptance limits.
+
+
+The public app name is **JustWhisper** (one word). Legacy internal module, bundle, storage, Keychain, CLI and sync identities remain compatible with the earlier JustWisper build. This preserves existing recordings, encrypted libraries, credentials and integrations. The workspace folder is unchanged.

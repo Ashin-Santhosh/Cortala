@@ -138,3 +138,8 @@ Live inference timing callbacks previously re-showed Ready even though the model
 ## Git tracking begins
 
 At the user's request, this folder was initialized as a local Git repository on main. The current Mac source is the initial baseline; earlier work remains documented but has no recoverable commit-by-commit history. Downloaded models, builds/caches, recordings, libraries/vaults and device-local credentials/tooling are excluded. No remote was configured and no source was published. See version-control.md.
+
+
+## JustWhisper branding checkpoint
+
+The user confirmed JustWhisper, one word with the h. The public package/product, executable, app/menu/sidebar labels, icon asset and archive now use that spelling. Existing bundle/storage/Keychain/vault/CLI/sync identities remain compatible; source module paths also retain the legacy name. All 152 Swift tests and eight Python checks passed. The renamed release ZIP passed CRC and the package plus clean installed JustWhisper.app passed the native inventory, notices/hashes and signature audit. Native UI showed JustWhisper in the window, sidebar and app menu. The prior installed name and generated duplicate apps were preserved in Trash; personal data was not relocated. See branding.md.

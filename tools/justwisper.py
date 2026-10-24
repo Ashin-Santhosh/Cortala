@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local JustWisper CLI and MCP stdio server. Requires Python 3.9+, no dependencies."""
+"""Local JustWhisper CLI and MCP stdio server. Requires Python 3.9+, no dependencies."""
 import argparse
 import json
 import os
@@ -69,9 +69,9 @@ def request_action(root, action, arguments, timeout=10):
             private_directory(directory)
         status = read_json(folder / "status.json", 4096, private=True)
         if not -5 <= time.time() - float(status.get("updatedAt", 0)) <= 3:
-            raise ValueError("JustWisper's automation heartbeat is stale.")
+            raise ValueError("JustWhisper's automation heartbeat is stale.")
     except (OSError, ValueError) as error:
-        raise ValueError("Open JustWisper and enable Local automation in Configuration. " + str(error)) from None
+        raise ValueError("Open JustWhisper and enable Local automation in Configuration. " + str(error)) from None
     request_id = str(uuid.uuid4())
     payload = json.dumps({"id": request_id, "createdAt": time.time(), "action": action, "arguments": arguments}).encode()
     if len(payload) > 65536:
@@ -96,7 +96,7 @@ def request_action(root, action, arguments, timeout=10):
             if not reply.get("ok"):
                 raise ValueError(reply.get("error", "The app rejected the request."))
             return reply.get("result") or {"accepted": True}
-        raise ValueError("JustWisper did not answer within 10 seconds. Check that the app is running with Local automation enabled.")
+        raise ValueError("JustWhisper did not answer within 10 seconds. Check that the app is running with Local automation enabled.")
     finally:
         for path in (temporary, destination, reply_path):
             try:
@@ -111,7 +111,7 @@ def call_tool(root, name, arguments):
     if name not in READ_TOOLS:
         raise ValueError("Unknown tool.")
     if (root / "library.vault").exists() or (root / "library.vault").is_symlink():
-        raise ValueError("The transcript library is encrypted. Read or export it from JustWisper; this tool does not retrieve the encryption key.")
+        raise ValueError("The transcript library is encrypted. Read or export it from JustWhisper; this tool does not retrieve the encryption key.")
     library = read_json(root / "library.json")
     if name == "list_history":
         limit = max(1, min(1000, int(arguments.get("limit", 50))))

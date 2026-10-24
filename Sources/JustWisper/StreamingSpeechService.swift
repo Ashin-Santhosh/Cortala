@@ -143,7 +143,7 @@ final class StreamingSpeechService {
         } else { authorization = SFSpeechRecognizer.authorizationStatus() }
         try Task.checkCancellation()
         guard authorization == .authorized else {
-            throw ProviderError.message("Speech Recognition permission is required for Apple live captions. Enable it for JustWisper in System Settings, or choose selected-provider previews explicitly. The final recording can still use your configured speech model.")
+            throw ProviderError.message("Speech Recognition permission is required for Apple live captions. Enable it for JustWhisper in System Settings, or choose selected-provider previews explicitly. The final recording can still use your configured speech model.")
         }
         self.vocabulary = Array(vocabulary.filter { !$0.isEmpty }.prefix(100))
         sessions = next; accumulator = StreamingTranscriptAccumulator(retainFullTranscript: retainFullTranscript)

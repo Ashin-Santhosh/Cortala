@@ -14,9 +14,9 @@ for option in "$@"; do
     esac
 done
 if [[ "$SKIP_BUILD" == 0 ]]; then scripts/build.sh release; fi
-SOURCE_APP="$PROJECT_ROOT/dist/JustWisper.app"
+SOURCE_APP="$PROJECT_ROOT/dist/JustWhisper.app"
 STAGING="$PROJECT_ROOT/dist/package"
-APP="$STAGING/JustWisper.app"
+APP="$STAGING/JustWhisper.app"
 mkdir -p "$STAGING"
 # Only replace this script's generated staging product.
 if [[ -d "$APP" ]]; then rm -rf "$APP"; fi
@@ -39,6 +39,6 @@ fi
 /usr/bin/codesign --force --sign - "$APP"
 python3 scripts/audit-bundle.py "$APP"
 ARCH="$(/usr/bin/uname -m)"
-ARCHIVE="$PROJECT_ROOT/dist/JustWisper-macOS-$ARCH.zip"
+ARCHIVE="$PROJECT_ROOT/dist/JustWhisper-macOS-$ARCH.zip"
 /usr/bin/ditto -c -k --norsrc --noextattr --noacl --keepParent "$APP" "$ARCHIVE"
 printf 'Packaged %s\nApp: %s\nAd hoc signed; not notarized. Model weights are downloaded separately.\n' "$ARCHIVE" "$APP"

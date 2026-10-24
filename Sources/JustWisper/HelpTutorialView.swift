@@ -18,7 +18,7 @@ struct WelcomeGuideView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
             HStack {
-                Label("Welcome to JustWisper", systemImage: "waveform").font(.title2.weight(.semibold))
+                Label("Welcome to JustWhisper", systemImage: "waveform").font(.title2.weight(.semibold))
                 Spacer(); Text("\(step + 1) of \(titles.count)").font(.caption).foregroundStyle(.secondary)
             }
             Text(titles[step]).font(.title.weight(.semibold))
@@ -30,7 +30,7 @@ struct WelcomeGuideView: View {
                     Text("Microphone access is requested only when you start recording. You can review and copy the result in Home.")
                 case 1:
                     Text("Click a text field in another app first, then use your global shortcut to start and stop. Keep focus in that field until the final text is inserted.")
-                    Text("Auto-paste needs Accessibility permission. Recording inside JustWisper is useful for reviewing and copying text here.")
+                    Text("Auto-paste needs Accessibility permission. Recording inside JustWhisper is useful for reviewing and copying text here.")
                     Button("Open Accessibility settings") { SetupDestination.open("Accessibility") }
                 case 2:
                     Text("In Meetings, choose microphone, system audio, or both. Audio only is currently supported. Obtain the participants’ permission before recording.")

@@ -158,7 +158,7 @@ enum JustWisperURLCommand: Equatable {
         guard url.scheme?.lowercased() == "justwisper", url.user == nil, url.password == nil, url.port == nil,
               url.path.isEmpty || url.path == "/", url.fragment == nil,
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let action = url.host?.lowercased() else {
-            throw AppError.message("Invalid JustWisper command URL.")
+            throw AppError.message("Invalid JustWhisper command URL.")
         }
         let items = components.queryItems ?? []
         guard items.count <= 1, items.allSatisfy({ ["id", "name", "mode"].contains($0.name.lowercased()) && !($0.value ?? "").isEmpty }) else {
@@ -185,7 +185,7 @@ enum JustWisperURLCommand: Equatable {
         case "stop", "cancel", "settings":
             guard items.isEmpty else { throw AppError.message("This command does not accept a mode selector.") }
             return action == "stop" ? .stop : action == "cancel" ? .cancel : .settings
-        default: throw AppError.message("Unknown JustWisper command. Supported commands: start, stop, toggle, cancel, mode, settings.")
+        default: throw AppError.message("Unknown JustWhisper command. Supported commands: start, stop, toggle, cancel, mode, settings.")
         }
     }
 }
