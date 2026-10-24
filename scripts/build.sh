@@ -33,6 +33,8 @@ cp "$ICON_PATH" "$APP/Contents/Resources/JustWhisper.icns"
 # The offline diarizer loads the separately verified user-selected CoreML assets.
 mkdir -p "$APP/Contents/Resources/ThirdPartyNotices"
 ditto "$PROJECT_ROOT/ThirdPartyNotices" "$APP/Contents/Resources/ThirdPartyNotices"
+cp "$PROJECT_ROOT/LICENSE" "$APP/Contents/Resources/LICENSE.txt"
+cp "$PROJECT_ROOT/COPYRIGHT" "$APP/Contents/Resources/COPYRIGHT.txt"
 mkdir -p "$APP/Contents/Resources/CLI"
 cp "$PROJECT_ROOT/tools/justwisper.py" "$APP/Contents/Resources/CLI/justwisper.py"
 codesign --force --deep --sign - "$APP"

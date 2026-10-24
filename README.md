@@ -1,6 +1,6 @@
 # JustWhisper
 
-Licensing is being prepared. The intended public source-available terms will allow contributions while restricting resale; no final license has been applied. Third-party components retain their own licenses.
+Copyright © 2026 CortexKinematics. JustWhisper's original code is licensed under **GNU GPL version 3 only (GPL-3.0-only)**; see [LICENSE](LICENSE) and [COPYRIGHT](COPYRIGHT). You may use, modify, redistribute and sell it under those terms. Distributed modified versions must provide corresponding source and preserve the GPL's requirements. Private modifications do not have to be published. Third-party components, model weights and notices retain their own licenses.
 
 A native macOS dictation and meeting-transcription app under active development. This personal development build uses local whisper.cpp or a cloud transcription endpoint, with an independently configured language model for cleanup, translation and meeting notes. English and multilingual recognition are supported through the selected speech model. Exact Superwhisper parity is not established. Current accuracy evaluation assesses JustWhisper independently; user-voice accuracy remains unmeasured.
 

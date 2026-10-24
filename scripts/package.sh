@@ -36,6 +36,8 @@ PYTHON
 fi
 # Runtime payloads were signed before manifest hashes were recorded. Sign only
 # the outer bundle here so those hashes stay stable.
+cp LICENSE "$APP/Contents/Resources/LICENSE.txt"
+cp COPYRIGHT "$APP/Contents/Resources/COPYRIGHT.txt"
 python3 scripts/release-metadata.py "$APP"
 /usr/bin/codesign --force --sign - "$APP"
 python3 scripts/audit-bundle.py "$APP"

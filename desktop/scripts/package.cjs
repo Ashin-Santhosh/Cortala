@@ -25,7 +25,7 @@ if (!fs.existsSync(path.join(runtime, 'licenses', 'whisper.cpp-LICENSE'))) {
     dir: root, name: 'JustWhisper', platform, arch,
     electronVersion: require('../package.json').devDependencies.electron,
     out: path.join(root, 'release'), overwrite: true, asar: true,
-    extraResource: [runtime],
+    extraResource: [runtime, path.join(root, '..', 'LICENSE'), path.join(root, '..', 'COPYRIGHT')],
     ignore: [/^\/release($|\/)/, /^\/runtime($|\/)/, /^\/test($|\/)/, /^\/native($|\/)/, /^\/scripts($|\/)/],
     prune: true,
   });

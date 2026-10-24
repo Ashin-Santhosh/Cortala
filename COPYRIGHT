@@ -1,0 +1,18 @@
+JustWhisper
+Copyright (C) 2026 CortexKinematics
+
+JustWhisper's original source code and first-party assets are licensed under GNU GPL version 3 only
+(SPDX-License-Identifier: GPL-3.0-only). See LICENSE for the complete terms.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, version 3 of the License.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+Third-party software, model weights, and notices retain their respective
+copyrights and licenses. This statement does not relicense those materials
+or grant trademark rights. Consult ThirdPartyNotices and the bundled runtime
+publisher notices for component-specific terms.

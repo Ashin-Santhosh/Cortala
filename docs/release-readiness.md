@@ -4,7 +4,7 @@ Prepared 2026-10-24. No website upload, GitHub publication, Apple submission, or
 
 ## Privacy review
 
-- Gitleaks 8.30.1, obtained from its official release and verified against its published SHA-256, scanned both existing Git commits: no credential leaks detected.
+- Gitleaks 8.30.1, obtained from its official release and verified against its published SHA-256, scanned the available Git history: no credential leaks detected.
 - A separate allowlisted source snapshot was scanned: no credential leaks detected. Models, recordings, credentials, local tooling, build caches, dependency checkouts and generated applications are excluded.
 - Personal development-directory paths were removed from the current benchmark report. Release builds remap compiler source paths and no longer discover models through the developer's source directory.
 - The existing private Git history still contains historical benchmark paths and normal author email metadata. The publication candidate intentionally excludes `.git`; publish that reviewed snapshot with a deliberate public author identity rather than blindly uploading this workspace's private history.
@@ -20,7 +20,9 @@ Validation: all 152 Swift regression tests passed after release-path changes. Th
 
 ## Licensing decision
 
-The requested policy is to accept contributions while restricting resale. GPL and MIT drafts were not published and no GPL license remains applied. The precise resale/commercial-use scope is awaiting confirmation. Such a restriction is **source-available**, not standard open source. Final first-party terms need to be selected and reviewed before a public source release; third-party licenses and notices remain unchanged.
+The final selected license is **GPL-3.0-only**, with copyright attributed to **CortexKinematics** (one word, capital K). It permits commercial redistribution and requires corresponding source under its terms. Earlier resale restrictions were superseded by this explicit GPLv3 choice. LICENSE contains the complete GPLv3 text; COPYRIGHT states its first-party scope. Third-party licenses and notices remain unchanged.
+
+Before public binary distribution, provide the complete corresponding source and build materials required by the GPL, including the necessary exact dependency sources or compliant equivalent source access. The first-party source snapshot and pinned manifests are preparation artifacts, not a completed assessment of corresponding-source compliance for every bundled component.
 
 ## Windows and Linux
 

@@ -36,11 +36,15 @@ auto-paste; system audio permission is needed for meeting system audio.
 The app is not a sandboxed or certified security product. Review recording
 retention and local/cloud settings before using it with sensitive material.
 
-License and redistribution terms are not yet finalized for this candidate.
-Third-party notices are included inside the app bundle.
+Copyright (C) 2026 CortexKinematics.
+JustWhisper's original code is licensed under GNU GPL version 3 only.
+Commercial redistribution is permitted under the GPL's terms, including
+corresponding-source obligations. See LICENSE.txt and COPYRIGHT.txt.
+Third-party notices are included inside the app bundle and retain their terms.
 ''')
 PY
 if [[ -f LICENSE ]]; then cp LICENSE "$STAGING/LICENSE.txt"; fi
+if [[ -f COPYRIGHT ]]; then cp COPYRIGHT "$STAGING/COPYRIGHT.txt"; fi
 ARCH="$(uname -m)"
 DMG="$PROJECT_ROOT/dist/JustWhisper-experimental-macOS-$ARCH.dmg"
 /usr/bin/hdiutil create -ov -format UDZO -fs HFS+ -volname JustWhisper -srcfolder "$STAGING" "$DMG"
