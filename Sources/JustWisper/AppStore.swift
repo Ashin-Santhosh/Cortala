@@ -768,7 +768,7 @@ import AVFoundation
                         defer { workflowRunning = false }
                         status = "Running \(workflow.name)…"
                         overlay.show(text: status, level: 0, style: settings.effectiveRecordingOverlayStyle == .none ? .classic : settings.effectiveRecordingOverlayStyle)
-                        try await WorkflowExecution.run(workflow, using: workflowRunner)
+                        try await WorkflowExecution.run(workflow, using: workflowRunner, spokenText: raw)
                         status = "Finished \(workflow.name)"
                     } else {
                         status = "No unique enabled workflow matched: \(raw.prefix(200))"

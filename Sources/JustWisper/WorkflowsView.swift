@@ -8,7 +8,7 @@ struct WorkflowsView: View {
     @State private var notice = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Build an ordered list of actions, then say its exact phrase using Record command. Ordinary dictation never runs workflows. Enabled matches run immediately. Use \(store.library.settings.workflowShortcut.displayName) to start and stop a command anywhere.").foregroundStyle(.secondary)
+            Text("Build an ordered list of actions, then say one of its phrases using Record command (followed by search text when needed). Ordinary dictation never runs workflows. Enabled matches run immediately. Use \(store.library.settings.workflowShortcut.displayName) to start and stop a command anywhere.").foregroundStyle(.secondary)
             HStack {
                 Button(store.commandRecording && store.isRecording ? "Stop command recording" : "Record command") {
                     store.toggleWorkflowRecording()
@@ -20,7 +20,7 @@ struct WorkflowsView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text(workflow.name).font(.headline)
-                        Text("“\(workflow.phrase)” · \(workflow.actions.count) actions · \(workflow.enabled ? "Enabled" : "Disabled")").font(.caption)
+                        Text("“\(workflow.phrases.joined(separator: "” / “"))” · \(workflow.actions.count) actions · \(workflow.enabled ? "Enabled" : "Disabled")").font(.caption)
                     }
                     Spacer()
                     Button("Preview / Run") { store.pendingWorkflow = workflow }
@@ -37,6 +37,13 @@ struct WorkflowsView: View {
             HStack { Text("Workflow editor").font(.headline); Spacer(); Button("New") { draft = VoiceWorkflow() } }
             TextField("Name", text: $draft.name)
             TextField("Exact voice phrase", text: $draft.phrase)
+            ForEach(Array((draft.alternativePhrases ?? []).indices), id: \.self) { index in
+                HStack {
+                    TextField("Alternative voice phrase", text: Binding(get: { draft.alternativePhrases?[index] ?? "" }, set: { draft.alternativePhrases?[index] = $0 }))
+                    Button("Remove phrase") { draft.alternativePhrases?.remove(at: index) }
+                }
+            }
+            Button("Add more phrases") { if draft.alternativePhrases == nil { draft.alternativePhrases = [] }; draft.alternativePhrases?.append("") }.disabled(draft.phrases.count >= 20)
             Toggle("Enabled for command matching", isOn: $draft.enabled)
             ForEach($draft.actions) { $action in
                 VStack(alignment: .leading, spacing: 8) {
@@ -49,6 +56,30 @@ struct WorkflowsView: View {
                     Button("↑") { move(action.id, offset: -1) }
                     Button("↓") { move(action.id, offset: 1) }
                     Button("Remove") { draft.actions.removeAll { $0.id == action.id } }
+                }
+                if action.kind == .webSearch {
+                    HStack { Text("Search separator"); TextField("Word or phrase", text: Binding(get: { action.querySeparator ?? "and about" }, set: { action.querySeparator = $0 })) }
+                    Text("Use {query} for search text spoken after any trigger, for example ‘search web best coffee’. Record command runs the search immediately. For separate tabs say ‘search for Winnie the Pooh and about Tom and Jerry’ (with ‘search for’ as a trigger). Separate up to 10 subjects using the separator below. The default ‘and about’ preserves ‘Tom and Jerry’; choosing ‘and’ will split that name. Replace {query} with fixed text for a saved search.").font(.caption).foregroundStyle(.secondary)
+                }
+                if action.kind == .openURL || action.kind == .webSearch {
+                    Picker("Browser", selection: $action.browserID) {
+                        Text("System default").tag(nil as String?)
+                        ForEach(WorkflowBrowsers.identifiers, id: \.self) { id in
+                            Text((WorkflowBrowsers.names[id] ?? id) + (NSWorkspace.shared.urlForApplication(withBundleIdentifier: id) == nil ? " · not installed" : "")).tag(Optional(id))
+                        }
+                    }.onChange(of: action.browserID) { _, _ in action.browserProfile = nil }
+                }
+                let browser = action.kind == .openApp ? action.value : action.browserID ?? ""
+                if WorkflowBrowsers.supportsProfiles(browser) {
+                    Picker("Browser profile", selection: $action.browserProfile) {
+                        Text("Browser default (browser chooses)").tag(nil as String?)
+                        let profiles = WorkflowBrowsers.profiles(browser)
+                        ForEach(profiles) { profile in Text(profile.name).tag(Optional(profile.id)) }
+                        if let selected = action.browserProfile, !profiles.contains(where: { $0.id == selected }) {
+                            Text("Missing profile: \(selected)").tag(Optional(selected))
+                        }
+                    }
+                    Text("Named profiles must exist on this Mac. Missing profiles stop the workflow; Browser default uses the browser’s own choice. Safari profile selection is unavailable.").font(.caption).foregroundStyle(.secondary)
                 }
                 if action.kind == .openApp {
                     HStack {
@@ -64,6 +95,10 @@ struct WorkflowsView: View {
                 }
                 }.onChange(of: action.kind) { _, kind in
                     if kind != .openApp { action.displayIndex = nil; action.fullscreen = nil }
+                    action.browserID = nil; action.browserProfile = nil; action.querySeparator = nil
+                    if kind == .webSearch { action.value = "{query}" }
+                }.onChange(of: action.value) { _, _ in
+                    if action.kind == .openApp { action.browserProfile = nil }
                 }
             }
             HStack {
@@ -71,7 +106,7 @@ struct WorkflowsView: View {
                 Button("Save workflow") {
                     do {
                         try WorkflowSharing.validate(draft)
-                        guard !store.library.workflows.contains(where: { $0.id != draft.id && WorkflowSharing.normalized($0.phrase) == WorkflowSharing.normalized(draft.phrase) }) else { notice = "Choose a unique command phrase."; return }
+                        guard !store.library.workflows.contains(where: { $0.id != draft.id && !Set($0.phrases.map(WorkflowSharing.normalized)).isDisjoint(with: draft.phrases.map(WorkflowSharing.normalized)) }) else { notice = "Choose unique command phrases."; return }
                         if let index = store.library.workflows.firstIndex(where: { $0.id == draft.id }) { store.library.workflows[index] = draft }
                         else { guard store.library.workflows.count < 100 else { notice = "Limit: 100 workflows"; return }; store.library.workflows.append(draft) }
                         if store.save() { notice = "Workflow saved" }
@@ -106,7 +141,7 @@ struct WorkflowsView: View {
         draft.actions[index].value = bundleID
     }
     private func hint(_ kind: WorkflowAction.Kind) -> String {
-        switch kind { case .openApp: "com.apple.Safari"; case .openURL: "https://example.com"; case .webSearch: "Search text"; case .delay: "Seconds (0–30)" }
+        switch kind { case .openApp: "com.apple.Safari"; case .openURL: "https://example.com"; case .webSearch: "{query} or fixed search text"; case .delay: "Seconds (0–30)" }
     }
     private func move(_ id: UUID, offset: Int) {
         guard let index = draft.actions.firstIndex(where: { $0.id == id }), draft.actions.indices.contains(index + offset) else { return }
