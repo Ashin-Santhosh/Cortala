@@ -34,3 +34,30 @@ node_modules/
 desktop/release/
 desktop/native-build/
 desktop/runtime/
+
+# Private captures, transcripts, logs, and local databases
+*.wav
+*.m4a
+*.mp3
+*.caf
+*.pcm
+*.flac
+*.mp4
+*.mov
+*.log
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+Transcripts/
+Recovery/
+
+# Generated application bundles and downloaded model payloads
+*.app/
+Models/
+*.gguf
+*.ggml
+*.onnx
+*.mlmodelc/
