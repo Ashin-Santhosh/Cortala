@@ -21,7 +21,10 @@ struct LocalWhisperAccumulator {
         var incoming = words.filter { $0.start.isFinite && $0.end.isFinite && $0.start >= 0 && $0.end > $0.start && !$0.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && $0.end <= end - start + 0.5 }
             .map { LocalWhisperWord(start: $0.start + start, end: $0.end + start, text: $0.text.trimmingCharacters(in: .whitespacesAndNewlines)) }
         if start > windowStart {
-            let candidates = provisional.filter { $0.end <= start + 2 }
+            // Commit only audio that has actually left the rolling window.
+            // Resampling can shift a growing startup window by a fraction of
+            // a sample; committing two seconds ahead repeats its opening words.
+            let candidates = provisional.filter { $0.end <= start }
             if !candidates.isEmpty {
                 // Acoustic word timestamps drift between windows. Align a real
                 // textual suffix within the overlapping audio before committing.
@@ -34,6 +37,7 @@ struct LocalWhisperAccumulator {
                         for offset in 0...min(12, incoming.count - length) {
                             let range = offset..<(offset + length)
                             if zip(suffix, incoming[range]).allSatisfy({ token($0.text) == token($1.text) }),
+                               incoming[offset].start < (suffix.last?.end ?? 0),
                                abs((suffix.last?.end ?? 0) - incoming[offset + length - 1].end) < 2 {
                                 matched = offset + length; break search
                             }
@@ -43,11 +47,19 @@ struct LocalWhisperAccumulator {
                 committed += candidates
                 if let matched { incoming.removeFirst(matched) }
                 else {
-                    complete = false
                     let boundary = committed.last?.end ?? start
+                    // No textual overlap is expected when the new window
+                    // begins after the committed word. Preserve a genuinely
+                    // repeated next word rather than matching it by text alone.
+                    if let first = incoming.first, first.start < boundary - 0.05 { complete = false }
                     incoming.removeAll { $0.end <= boundary }
                 }
             }
+        }
+        // A repeated window (including Stop's final decode) can contain words
+        // already committed by a previous window. Never restore that prefix.
+        if let boundary = committed.last?.end {
+            incoming.removeAll { $0.end <= boundary }
         }
         provisional = incoming
         windowStart = start; coveredUntil = end

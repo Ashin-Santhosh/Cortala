@@ -3,6 +3,31 @@ import Testing
 @testable import JustWisper
 
 struct LocalWhisperLiveTests {
+    @Test func startupResamplingDriftDoesNotCommitOpeningWordsRepeatedly() throws {
+        var accumulator = LocalWhisperAccumulator()
+        let words: [LocalWhisperWord] = [
+            .init(start: 0, end: 0.4, text: "first"),
+            .init(start: 0.4, end: 0.8, text: "few"),
+            .init(start: 0.8, end: 1.2, text: "words")
+        ]
+        for index in 0..<5 {
+            accumulator.update(words, start: Double(index) / 16000, end: 2 + Double(index))
+            #expect(accumulator.text == "first few words")
+            #expect(accumulator.committed.isEmpty)
+        }
+        #expect(try accumulator.finalText(at: 6) == "first few words")
+    }
+
+    @Test func repeatedFinalWindowDoesNotRestoreCommittedPrefixOrEraseRealRepetition() throws {
+        var accumulator = LocalWhisperAccumulator()
+        accumulator.update([.init(start: 0, end: 1, text: "go"), .init(start: 1, end: 2, text: "go")], start: 0, end: 3)
+        let tail: [LocalWhisperWord] = [.init(start: 0, end: 1, text: "go"), .init(start: 1, end: 2, text: "now")]
+        accumulator.update(tail, start: 1, end: 4)
+        #expect(try accumulator.finalText(at: 4) == "go go now")
+        accumulator.update(tail, start: 1, end: 4)
+        #expect(try accumulator.finalText(at: 4) == "go go now")
+    }
+
     @Test func overlappingWindowsReplaceHypothesesAndNeverRepeatWholeWindows() throws {
         var accumulator = LocalWhisperAccumulator()
         accumulator.update([.init(start: 0, end: 1, text: "hello"), .init(start: 1, end: 2, text: "wrong")], start: 0, end: 3)
